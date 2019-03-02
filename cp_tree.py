@@ -96,8 +96,7 @@ class Tree:
         elif val>root.val:
             return self.search(val,root.right)
         else:
-            return self.search(val,root.left)
-            
+            return self.search(val,root.left)            
             
         
     def delete(self, val):
@@ -107,12 +106,34 @@ class Tree:
         node.val=new_val.val        
         new_val.val=None
         
-            
+    def size(self,root='null'):
+        if root=='null':
+            root=self.root
+        if root==None:
+            return 0
+        return self.size(root.left)+self.size(root.right)+1
         
         
-    def test(self):
-        w=self.root.right
-        return w
+    def rank(self, val, root='null'):
+        if root=='null':
+            root=self.root
+        if root==None:
+            return 0
+        if val==root.val:
+            return self.size(root.left)
+        elif val>root.val:
+            return 1+self.size(root.left)+self.rank(val, root.right)
+        else:
+            return self.rank(val,root.left)
+        
+    def range_search(self, val1,val2,root='null'):
+        if root=='null':
+            root=self.root
+        return self.rank(val1)-self.rank(val2)
+        
+        
+        
+    
         
         
     
