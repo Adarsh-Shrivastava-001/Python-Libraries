@@ -24,6 +24,9 @@ class Graph:
         self.__adj_mat=None
         self.__lin_list=None
         self.verbose=verbose
+        self.weight=[1 for i in range(self.n)]
+        self.tree=[i for i in range(self.n)]
+        
         if self.is_adj_mat==True:
             self.__adj_mat=[[0 for i in range(n)] for j in range(n)]
         else:
@@ -36,7 +39,12 @@ class Graph:
             for i in range(n):
                 self.graph.add_node(i)
             
-            
+    def root(self,node):
+        if self.tree[node]==node:
+            return node
+        return self.root(self.tree[node])
+        
+        
         
     def add_edge(self, node1, node2, directed=True):
         
@@ -54,6 +62,21 @@ class Graph:
             else:
                 self.__lin_list[node1].append(node2)
                 self.__lin_list[node2].append(node1)
+             
+            root1=self.root(node1)
+            root2=self.root(node2)
+            if root1!=root2:
+                if self.weight[root1]>self.weight[root2]:
+                    self.weight[root1]+=self.weight[root2]
+                    self.tree[root2]=self.tree[root1]
+                    
+                else:
+                    self.weight[root2]+=self.weight[root1]
+                    self.tree[root1]=self.tree[root2]
+                
+                
+                
+                
                 
         if self.verbose==True:
             self.actions.append('Added edge : '+ str(node1)+'-'+str(node2))
@@ -119,15 +142,46 @@ class Graph:
         
     def draw(self):
         return draw(a.graph)
+    
+    def is_connected(self,node1, node2):
+        if self.root(node1)==self.root(node2):
+            return True
+        
+    def conn_components(self):
+        num=0
+        for i in range(self.n):
+            if i==self.tree[i]:
+                num=num+1
+        return num
+    
+    def component_nodes(self, node):
+        return self.weight[self.root(node)]
+    
+    
              
                 
         
 a=Graph(10, 1, verbose=True)
+
 a.add_edge(1,2,0)
+a.tree
 a.add_edge(2,3,0)
+a.tree
+
 a.add_edge(3,4,0)
+a.tree
+
 a.add_edge(4,5,0)
+a.tree
+
 a.add_edge(4,2,0)
+a.tree
+
 a.add_edge(2,6,0)
 a.add_edge(2,7,0)
 a.add_edge(0,8,0)
+
+
+
+
+
