@@ -54,8 +54,10 @@ class MaxHeap:
         right=self.right(ind)
         left=self.left(ind)
         m=max(self.heap[ind], self.heap[left], self.heap[right])
+        
         if m==self.heap[ind]:
             return
+        
         elif m==self.heap[right]:
             self.heap[ind], self.heap[right]= self.heap[right], self.heap[ind]
             self.rev_heapify(right)
@@ -67,8 +69,3 @@ class MaxHeap:
     def hsort(self):
         for i in range(self.n):
             print(self.pop())
-
-import sys
-sys.setrecursionlimit(70)
-        
-        
